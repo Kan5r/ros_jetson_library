@@ -10,9 +10,7 @@ int main(int argc, char **argv) {
   pnh.param<std::string>("device", device, "/dev/ttyUSB0");
 
   ros::jetson::Serial serial(device.c_str(), ros::jetson::BR115200, ros::jetson::DPS8N1);
-
   ros::Rate rate(50);
-
   std::string str("HelloWorld");
 
   while (ros::ok()) {
