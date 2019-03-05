@@ -14,7 +14,7 @@ Serial::Serial(const char* device, BaudRate baudrate, Dps dps) :
   if (fd_ < 0) {
     perror(device);
     exit(-1);
-  }
+}
 
   tcgetattr(fd_, &oldtio_); //現在のポート設定を待避
   init(baudrate, dps);
