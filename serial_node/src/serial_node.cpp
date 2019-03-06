@@ -1,6 +1,8 @@
 #include <ros/ros.h>
 #include "serial_node/serial.hpp"
 
+using namespace ros::jetson;
+
 int main(int argc, char **argv) {
   ros::init(argc, argv, "serial_node");
   ros::NodeHandle nh;
@@ -9,7 +11,7 @@ int main(int argc, char **argv) {
   std::string device;
   pnh.param<std::string>("device", device, "/dev/ttyUSB0");
 
-  ros::jetson::Serial serial(device.c_str(), ros::jetson::BR115200, ros::jetson::DPS8N1);
+  Serial serial(device.c_str(), BR115200, DPS8N1);
   ros::Rate rate(50);
   std::string str("HelloWorld");
 
