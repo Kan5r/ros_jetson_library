@@ -2,7 +2,6 @@
 #define SERIAL_RW_H_
 
 // unistd.hのwrite(), read()関数が，何故かオーバーロードできないので，この関数を使うこと
-// close()を使うためにunistd.hをインクルードして使っても問題なし
 
 namespace rw {
 
