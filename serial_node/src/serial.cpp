@@ -10,24 +10,24 @@ using namespace ros::jetson;
 Serial::Serial(const char* device, BaudRate baudrate, Dps dps) : 
   fd_(0), oldtio_(), newtio_()
 {
-  fd_ = open(device, O_RDWR); //読み書きモードでオープン
+  fd_ = open(device, O_RDWR); 
   if (fd_ < 0) {
     perror(device);
     exit(-1);
-}
+  }
 
-  tcgetattr(fd_, &oldtio_); //現在のポート設定を待避
+  tcgetattr(fd_, &oldtio_); 
   init(baudrate, dps);
 }
 
 Serial::~Serial() {
-  tcsetattr(fd_, TCSANOW, &oldtio_); //設定をもとに戻す
+  tcsetattr(fd_, TCSANOW, &oldtio_); 
   close(fd_);
 }
 
 void Serial::init(BaudRate baudrate, Dps dps) {
 
-  newtio_.c_lflag &= ~ICANON; //非カノニカルモード
+  newtio_.c_lflag &= ~ICANON;
 
   switch (dps) {
   case Dps::DPS8N1:
@@ -45,8 +45,8 @@ void Serial::init(BaudRate baudrate, Dps dps) {
   newtio_.c_oflag = 0;
 
   newtio_.c_lflag = 0;
-  newtio_.c_cc[VTIME] = 0;   //キャラクタ間タイマは未使用
-  newtio_.c_cc[VMIN]  = 1;   //バッファに一文字入るまで待機
+  newtio_.c_cc[VTIME] = 0;   
+  newtio_.c_cc[VMIN]  = 1;
 
   cfsetispeed(&newtio_, baudrate);
  
@@ -59,7 +59,10 @@ void Serial::write(std::string& tx_data) {
 }
 
 void Serial::read(std::string& rx_data) {
-  char* rx_data_ = new char[rx_data.length()];
-  rw::readFromFile(fd_, rx_data_, rx_data.length());
-  rx_data = rx_data_;
+  char character[1];
+  while (1){
+    rw::readFromFile(fd_, character, 1);
+    if (character[0] == '\0') break;
+    rx_data += character;
+  }
 }

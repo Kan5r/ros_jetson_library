@@ -7,15 +7,17 @@
 namespace ros { namespace jetson {
 
 enum BaudRate {
-  BR9600 = B9600,
-  BR19200 = B19200,
-  BR38400 = B38400,
-  BR57600 = B57600,
+  BR9600   = B9600,
+  BR19200  = B19200,
+  BR38400  = B38400,
+  BR57600  = B57600,
   BR115200 = B115200,
 };
 
 enum Dps {
-  DPS8N1, DPS8O1, DPS8E1
+  DPS8N1, 
+  DPS8O1, 
+  DPS8E1
 };
 
 
@@ -24,7 +26,7 @@ public:
   Serial(const char* device, BaudRate baudrate, Dps dps);
   ~Serial();
   void init(BaudRate baudrate, Dps dps);
-  virtual void write(std::string&  tx_data);
+  void write(std::string&  tx_data);
   void read(std::string& rx_data);
 
 private:
