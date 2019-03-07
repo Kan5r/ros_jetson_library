@@ -10,7 +10,7 @@ enum J21PinHeader {
   GPIO12 = 392,
   GPIO13 = 397,
   GPIO15 = 255,
-  GPIO16 = 296,
+  //GPIO16 = 296,
   GPIO18 = 481,
   GPIO22 = 254,
   GPIO29 = 398,
@@ -44,7 +44,9 @@ public:
   
 private:
   int fd_;
-  std::string pinfile_, pinfile_direction_, pinfile_value_;
+  std::string pin_num_, pinfile_, pinfile_direction_, pinfile_value_;
+  void exportPin();
+  void unexportPin();
 };
 
 }}

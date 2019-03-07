@@ -9,20 +9,24 @@ int main(int argc, char **argv) {
   ros::NodeHandle nh;
   ros::NodeHandle pnh("~");
 
-  Gpio gpio(GPIO15, INPUT);
+  Gpio gpio_sw(GPIO15, INPUT);
+  Gpio gpio_led(GPIO18, OUTPUT);
   bool ispushed = false;
 
   while (ros::ok()) {
-    if (gpio.read()) {
+    if (gpio_sw.read()) {
+      gpio_led.write(HIGH);
       if (!ispushed) {
         ROS_INFO("Button is pushed");
         ispushed = true;
       }
     } else {
+      gpio_led.write(LOW);
       ispushed = false;
     }
   } 
 
-  gpio.~Gpio();
+  gpio_sw.~Gpio();
+  gpio_led.~Gpio();
   return 0;
 }

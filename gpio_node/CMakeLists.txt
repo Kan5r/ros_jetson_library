@@ -8,6 +8,7 @@ catkin_package()
 include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_library(file_rw src/file_rw.cpp)
+add_dependencies(file_rw ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(file_rw ${catkin_LIBRARIES})
 
 add_library(gpio src/gpio.cpp)
