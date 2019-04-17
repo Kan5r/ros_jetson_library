@@ -1,0 +1,5 @@
+<launch>
+  <node pkg="serial_node" type="serial_node" name="usb_serial" output="screen">
+    <param name="device" value="/dev/ttyUSB0"/>
+  </node>  
+</launch>
