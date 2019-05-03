@@ -5,6 +5,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdexcept>
+#include <iostream>
 
 using ros::Serial;
 
@@ -52,7 +53,7 @@ void Serial::init(std::string baudrate, std::string dps)
 
   newtio_.c_lflag = 0;
   newtio_.c_cc[VTIME] = 0;   
-  newtio_.c_cc[VMIN]  = 1;
+  newtio_.c_cc[VMIN]  = 0;
 
   cfsetispeed(&newtio_, baudrate_);
  
@@ -60,7 +61,7 @@ void Serial::init(std::string baudrate, std::string dps)
   tcsetattr(fd_, TCSANOW, &newtio_);
 }
 
-void Serial::write(std::string& tx_data) 
+void Serial::write(std::string& tx_data)
 {
   rw::writeToFile(fd_, tx_data.c_str(), tx_data.length()+1);
 }
@@ -69,11 +70,21 @@ bool Serial::read(std::string& rx_data)
 {
   char character[1];
   bool success;
+  
+  ros::Time start_time;
+  ros::Time current_time;
+
+  start_time = current_time = ros::Time::now();
+
   while (1) {
-    if (!rw::readFromFile(fd_, character, 1)) {
+    current_time = ros::Time::now();
+    if ((current_time - start_time).toSec() >= 1.0) {
       success = false;
       break;
-    }
+    } 
+   
+    if (!rw::readFromFile(fd_, character, 1)) continue;
+    
     if (character[0] == '\0') {
       success = true;
       break;
@@ -129,9 +140,10 @@ void SerialNode::write(const std_msgs::String::ConstPtr& msg)
   serial_->write(serial_data);
 }
 
-void SerialNode::read(std::string rx_data) throw()
+void SerialNode::read(std::string rx_data) throw(std::runtime_error)
 {
-  if (!serial_->read(rx_data)) return throw std::runtime_error("buffer is empty");
+  if (!serial_->read(rx_data)) 
+    return throw  std::runtime_error("buffer is empty");
   ROS_INFO_STREAM(rx_data);
   rx_data_.data = rx_data;
   serial_pub_.publish(rx_data_);

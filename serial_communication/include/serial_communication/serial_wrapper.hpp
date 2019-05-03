@@ -44,7 +44,7 @@ class SerialNode {
 public:
   SerialNode();
   ~SerialNode();
-  void read(std::string rx_data) throw();
+  void read(std::string rx_data) throw(std::runtime_error);
 private:
   void init();
   void write(const std_msgs::String::ConstPtr& msg);

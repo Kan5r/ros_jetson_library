@@ -1,13 +1,13 @@
 <launch>
-  <node pkg="serial_communication" type="serial_communication_transmitter" name="usb_serial_tx">
+  <!--<node pkg="serial_communication" type="serial_communication_transmitter" name="usb_serial_tx">
     <param name="device" value="/dev/ttyUSBFTDI"/>
     <param name="baudrate" value="115200"/>
     <param name="dps" value="8N1"/>
     <param name="use_transmission" value="true"/>
     <param name="use_reception" value="false"/>
-  </node>
+  </node>-->
 
-  <node pkg="serial_communication" type="serial_communication_receiver" name="usb_serial_rx">
+  <node pkg="serial_communication" type="serial_communication_receiver" name="usb_serial_rx" output="screen">
     <param name="device" value="/dev/ttyUSBFTDI"/>
     <param name="baudrate" value="115200"/>
     <param name="dps" value="8N1"/>
